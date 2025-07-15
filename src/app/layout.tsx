@@ -4,7 +4,7 @@ import "~/styles/globals.css";
 import {
   ColorSchemeScript,
   MantineProvider,
-  mantineHtmlProps,
+  mantineHtmlProps
 } from "@mantine/core";
 
 import { type Metadata } from "next";

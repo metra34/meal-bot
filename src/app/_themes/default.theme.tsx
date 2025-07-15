@@ -18,7 +18,24 @@ const green: MantineColorsTuple = [
   "#009e51",
 ];
 
-const themeOverride = createTheme({ colors: { green } });
+// use last index as bg color
+const bg: MantineColorsTuple = [
+  "#f4f4f5",
+  "#e6e6e6",
+  "#cbcbcb",
+  "#afafaf",
+  "#969696",
+  "#868789",
+  "#7e7f83",
+  "#6c6d71",
+  "#606066",
+  "#50515a",
+];
+
+const themeOverride = createTheme({
+  primaryColor: "green",
+  colors: { green, bg },
+});
 // TODO: this is only needed if access to theme outside of components is needed
 const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
 
