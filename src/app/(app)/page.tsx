@@ -1,4 +1,3 @@
-import { AppShellMain } from "@mantine/core";
 import Link from "next/link";
 
 import { LatestPost } from "~/app/_components/post";

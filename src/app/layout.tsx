@@ -1,15 +1,9 @@
 import "@mantine/core/styles.css";
+import { Geist } from "next/font/google";
 import "~/styles/globals.css";
-
-import {
-  ColorSchemeScript,
-  MantineProvider,
-  mantineHtmlProps
-} from "@mantine/core";
 
 import { type Metadata } from "next";
 import { TRPCReactProvider } from "~/trpc/react";
-import theme from "./_themes/default.theme";
 
 export const metadata: Metadata = {
   title: "Meal Bot",
@@ -17,18 +11,18 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+});
+
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" {...mantineHtmlProps}>
-      <head>
-        <ColorSchemeScript />
-      </head>
+    <html lang="en" className={`${geist.variable}`}>
       <body>
-        <MantineProvider theme={theme}>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </MantineProvider>
+        <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
   );
