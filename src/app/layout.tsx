@@ -2,6 +2,8 @@ import { Geist } from "next/font/google";
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
+import { Footer } from "~/components/footer";
+import { Header } from "~/components/header";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
@@ -20,8 +22,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body cz-shortcut-listen="true">
-        <TRPCReactProvider>{children}</TRPCReactProvider>
+      <body
+        cz-shortcut-listen="true"
+        className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#009e51] to-[#15162c]"
+      >
+        <TRPCReactProvider>
+          <Header />
+          <main>{children}</main>
+          <Footer />
+        </TRPCReactProvider>
       </body>
     </html>
   );
