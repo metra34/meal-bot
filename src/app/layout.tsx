@@ -1,4 +1,3 @@
-import "@mantine/core/styles.css";
 import { Geist } from "next/font/google";
 import "~/styles/globals.css";
 
