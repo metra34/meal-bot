@@ -14,6 +14,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// TODO DELETE THIS
 model Post {
     id        Int      @id @default(autoincrement())
     name      String
@@ -55,14 +56,18 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
+    id                String                 @id @default(cuid())
+    name              String?
+    email             String?                @unique
+    emailVerified     DateTime?
+    image             String?
+    accounts          Account[]
+    sessions          Session[]
+    posts             Post[]
+    mealPlans         MealPlan[]
+    favoriteMealPlans UserFavoriteMealPlan[]
+    favoriteMeals     UserFavoriteMeal[]
+    favoriteRecipes   UserFavoriteRecipe[]
 }
 
 model VerificationToken {
@@ -71,4 +76,117 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+/**
+ * MEALS
+ */
+model MealPlan {
+    id            String                 @id @default(cuid())
+    name          String
+    totalCalories Int
+    notes         String?
+    createdAt     DateTime               @default(now())
+    userId        String
+    user          User                   @relation(fields: [userId], references: [id])
+    meals         Meal[]
+    tags          MealPlanTag[]
+    favoritedBy   UserFavoriteMealPlan[]
+}
+
+model Meal {
+    id          String             @id @default(cuid())
+    type        MealType
+    description String
+    calories    Int
+    netCarbs    Float
+    mealPlanId  String
+    mealPlan    MealPlan           @relation(fields: [mealPlanId], references: [id])
+    recipes     Recipe[]           @relation("MealRecipes")
+    favoritedBy UserFavoriteMeal[]
+}
+
+enum MealType {
+    breakfast
+    lunch
+    dinner
+    snack
+}
+
+model Recipe {
+    id            String               @id @default(cuid())
+    name          String
+    instructions  String
+    totalCalories Int
+    totalFat      Float
+    totalCarbs    Float
+    netCarbs      Float
+    totalProtein  Float
+    ingredients   Ingredient[]
+    meals         Meal[]               @relation("MealRecipes")
+    favoritedBy   UserFavoriteRecipe[]
+}
+
+model Ingredient {
+    id       Int    @id @default(autoincrement())
+    recipeId String
+    recipe   Recipe @relation(fields: [recipeId], references: [id])
+    name     String
+    quantity String
+    calories Float
+    fat      Float
+    carbs    Float
+    netCarbs Float
+    protein  Float
+}
+
+/**
+ * TAGS
+ */
+model Tag {
+    id           Int           @id @default(autoincrement())
+    name         String        @unique
+    mealPlanTags MealPlanTag[]
+}
+
+model MealPlanTag {
+    mealPlanId String
+    tagId      Int
+    mealPlan   MealPlan @relation(fields: [mealPlanId], references: [id])
+    tag        Tag      @relation(fields: [tagId], references: [id])
+
+    @@id([mealPlanId, tagId])
+}
+
+/**
+ * FAVORITES
+ */
+model UserFavoriteMealPlan {
+    userId      String
+    mealPlanId  String
+    favoritedAt DateTime @default(now())
+    user        User     @relation(fields: [userId], references: [id])
+    mealPlan    MealPlan @relation(fields: [mealPlanId], references: [id])
+
+    @@id([userId, mealPlanId])
+}
+
+model UserFavoriteMeal {
+    userId      String
+    mealId      String
+    favoritedAt DateTime @default(now())
+    user        User     @relation(fields: [userId], references: [id])
+    meal        Meal     @relation(fields: [mealId], references: [id])
+
+    @@id([userId, mealId])
+}
+
+model UserFavoriteRecipe {
+    userId      String
+    recipeId    String
+    favoritedAt DateTime @default(now())
+    user        User     @relation(fields: [userId], references: [id])
+    recipe      Recipe   @relation(fields: [recipeId], references: [id])
+
+    @@id([userId, recipeId])
 }
