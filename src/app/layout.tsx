@@ -20,7 +20,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${geist.variable}`}>
-      <body>
+      <body cz-shortcut-listen="true">
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
