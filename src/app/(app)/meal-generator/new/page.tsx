@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { ArrowLeft, Plus, X } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
-import { Label } from "~/components/ui/label";
 import {
   Card,
   CardContent,
@@ -14,10 +14,10 @@ import {
   CardTitle,
 } from "~/components/ui/card";
 import { Checkbox } from "~/components/ui/checkbox";
-import { Badge } from "~/components/ui/badge";
-import { ArrowLeft, Plus, X } from "lucide-react";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 
-export default function FormPage() {
+export default function MealFormPage() {
   const router = useRouter();
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [currentIngredient, setCurrentIngredient] = useState("");
@@ -68,12 +68,13 @@ export default function FormPage() {
     }));
 
     // Store in sessionStorage and navigate
+    // TODO replace with actual api call, wait for response of meal plan id and navigate to it
     sessionStorage.setItem("mealPlans", JSON.stringify(mockMeals));
-    router.push("/meals");
+    router.push("/meal-generator/test12345");
   };
 
   return (
-    <div className="min-h-screen px-4 py-12">
+    <div className="container mx-auto px-4 py-4">
       <Link
         href="/"
         className="mb-8 inline-flex items-center text-[#39E98E] transition-colors hover:text-[#39E98E]/80"

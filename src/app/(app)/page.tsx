@@ -26,7 +26,7 @@ export default function Home() {
         </p>
         
         {/* CTA Button */}
-        <Link href="/form">
+        <Link href="/meal-generator/new">
           <Button 
             size="lg" 
             className="text-lg px-8 py-4 h-auto bg-[#39E98E] hover:bg-[#39E98E]/90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"

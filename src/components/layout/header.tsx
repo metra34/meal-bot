@@ -43,7 +43,7 @@ export function Header() {
                 asChild
                 className={navigationMenuTriggerStyle()}
               >
-                <Link href="/meal-generator">Meal Generator</Link>
+                <Link href="/meal-generator/new">Meal Generator</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
