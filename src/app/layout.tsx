@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body
         cz-shortcut-listen="true"
-        className="min-h-screen bg-gradient-to-b from-[#262830] to-[#01713b]"
+        className="min-h-screen bg-gradient-to-tr from-[#2E313B] to-[#55555E]"
       >
         <SessionProvider>
           <TRPCReactProvider>
