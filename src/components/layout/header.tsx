@@ -1,6 +1,5 @@
 "use client";
 
-import { CircleCheckIcon, CircleHelpIcon, CircleIcon } from "lucide-react";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -53,7 +52,7 @@ export function Header() {
                 <ul className="grid w-[300px] gap-4">
                   <li>
                     <NavigationMenuLink asChild>
-                      <Link href="#">
+                      <Link href="/me/favorites">
                         <div className="font-medium">Favorites</div>
                         <div className="text-muted-foreground">
                           Your favorite meals, plans, and recipes.
@@ -61,7 +60,7 @@ export function Header() {
                       </Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="#">
+                      <Link href="/me/history">
                         <div className="font-medium">History</div>
                         <div className="text-muted-foreground">
                           Review your generated meal history.
@@ -69,7 +68,7 @@ export function Header() {
                       </Link>
                     </NavigationMenuLink>
                     <NavigationMenuLink asChild>
-                      <Link href="#">
+                      <Link href="/me/preferences">
                         <div className="font-medium">Preferences</div>
                         <div className="text-muted-foreground">
                           Customize your meal plan and recipe preferences.

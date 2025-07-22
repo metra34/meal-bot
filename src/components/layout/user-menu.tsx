@@ -2,12 +2,11 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 import { Button } from "../ui/button";
 
 export function UserMenu() {
   const { data: session } = useSession();
-  console.log("SESSION", session);
-
   return session?.user ? (
     <Avatar>
       <AvatarImage
@@ -21,6 +20,8 @@ export function UserMenu() {
       </AvatarFallback>
     </Avatar>
   ) : (
-    <Button className="cursor-pointer" variant="ghost">Log In</Button>
+    <Button className="cursor-pointer" variant="ghost" asChild>
+      <Link href="/api/auth/signin">Log In</Link>
+    </Button>
   );
 }
