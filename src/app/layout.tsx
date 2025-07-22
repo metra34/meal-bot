@@ -2,9 +2,10 @@ import { Geist } from "next/font/google";
 import "~/styles/globals.css";
 
 import { type Metadata } from "next";
-import { Footer } from "~/components/footer";
-import { Header } from "~/components/header";
+import { Footer } from "~/components/layout/footer";
+import { Header } from "~/components/layout/header";
 import { TRPCReactProvider } from "~/trpc/react";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Meal Bot",
@@ -21,18 +22,18 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-  <html lang="en" className={`${geist.variable}`}>
+    <html lang="en" className={`${geist.variable}`}>
       <body
         cz-shortcut-listen="true"
-        className="min-h-screen bg-gradient-to-b from-[#009e51] to-[#15162c]"
+        className="min-h-screen bg-gradient-to-b from-[#262830] to-[#01713b]"
       >
-        <TRPCReactProvider>
-          <Header />
-          <main className="pt-16 pb-16 w-full">
-            {children}
-          </main>
-          <Footer />
-        </TRPCReactProvider>
+        <SessionProvider>
+          <TRPCReactProvider>
+            <Header />
+            <main className="pt-16 pb-16">{children}</main>
+            <Footer />
+          </TRPCReactProvider>
+        </SessionProvider>
       </body>
     </html>
   );
