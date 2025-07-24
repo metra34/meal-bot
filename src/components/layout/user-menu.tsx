@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { LogOut, Settings } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import {
@@ -18,7 +18,7 @@ export function UserMenu() {
   return session?.user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar className="transition-transform hover:scale-110 cursor-pointer">
+        <Avatar className="cursor-pointer transition-transform hover:scale-110">
           <AvatarImage
             className="rounded-full"
             width={40}
@@ -36,15 +36,15 @@ export function UserMenu() {
           Settings
         </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
+        <DropdownMenuItem onClick={() => signOut({ callbackUrl: "/" })}>
           <LogOut />
-          Log out
+          Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (
     <Button className="cursor-pointer" variant="ghost" asChild>
-      <Link href="/api/auth/signin">Log In</Link>
+      <Link href="/api/auth/signin">Sign In</Link>
     </Button>
   );
 }
