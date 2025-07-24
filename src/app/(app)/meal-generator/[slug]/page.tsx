@@ -3,6 +3,7 @@
 import { ArrowLeft, Clock, RefreshCw, Users } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import GeneratingMealsLoading from "~/components/loading/generating-meals-loading";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -83,19 +84,7 @@ export default function MealsPage() {
 
   // TODO: make sure to navigate to new slug on successful regenerate
   if (isLoading) {
-    return (
-      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
-        <div className="text-center">
-          <RefreshCw className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
-          <h2 className="text-primary-foreground mb-2 text-2xl font-semibold">
-            Generating Your Meal Plans
-          </h2>
-          <p className="text-primary-foreground/70">
-            This will just take a moment...
-          </p>
-        </div>
-      </div>
-    );
+    return <GeneratingMealsLoading />;
   }
 
   return (
@@ -187,7 +176,7 @@ export default function MealsPage() {
 
                 <div className="mt-6 border-t pt-4">
                   <Button
-                    className="w-full bg-primary hover:bg-primary/90"
+                    className="bg-primary hover:bg-primary/90 w-full"
                     onClick={() => alert(`Starting meal plan: ${plan.name}`)}
                   >
                     Start This Plan

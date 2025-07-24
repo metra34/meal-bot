@@ -44,7 +44,7 @@ export default function NewMealFormPage() {
     defaultValues: {
       ingredients: [],
       calories: 2000,
-      mealTypes: ["breakfast", "lunch", "dinner", "snack"],
+      mealTypes: ["breakfast", "lunch", "dinner"],
       numServings: 2,
       numResults: 10,
     },
@@ -104,15 +104,15 @@ export default function NewMealFormPage() {
             Tell us about your ingredients and preferences
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-8">
+        <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {/* Ingredients Section */}
               <FormField
                 control={form.control}
                 name="ingredients"
                 render={() => (
-                  <FormItem className="space-y-4">
+                  <FormItem>
                     <FormLabel className="text-lg font-semibold">
                       Ingredients
                     </FormLabel>
@@ -189,7 +189,7 @@ export default function NewMealFormPage() {
                 control={form.control}
                 name="mealTypes"
                 render={() => (
-                  <FormItem className="space-y-4">
+                  <FormItem >
                     <FormLabel className="text-lg font-semibold">
                       Meal Types
                     </FormLabel>
