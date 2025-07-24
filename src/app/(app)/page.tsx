@@ -7,7 +7,7 @@ export default function Home() {
     <div className="flex items-center justify-center px-4">
       <div className="text-center max-w-4xl mx-auto">
         {/* Logo/Icon */}
-        <div className="mb-4 mt-8 inline-flex items-center justify-center w-24 h-24 bg-[#39E98E] rounded-full shadow-lg relative">
+        <div className="mb-4 mt-8 inline-flex items-center justify-center w-24 h-24 bg-primary rounded-full shadow-lg relative">
           <Cpu className="w-16 h-16 text-white" />
           <div className="absolute inset-0 flex items-center justify-center">
             <Utensils className="w-6 h-6 text-white" />
@@ -29,7 +29,7 @@ export default function Home() {
         <Link href="/meal-generator/new">
           <Button 
             size="lg" 
-            className="text-lg px-8 py-4 h-auto bg-[#39E98E] hover:bg-[#39E98E]/90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
+            className="text-lg px-8 py-4 h-auto bg-primary hover:bg-primary/90 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
           >
             Get Started
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -39,21 +39,21 @@ export default function Home() {
         {/* Features */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div className="p-6">
-            <div className="w-12 h-12 bg-[#39E98E]/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span className="text-2xl">🥗</span>
             </div>
             <h3 className="font-semibold text-white mb-2">Ingredient Based</h3>
             <p className="text-white/70">Use what you have to create amazing meals</p>
           </div>
           <div className="p-6">
-            <div className="w-12 h-12 bg-[#39E98E]/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span className="text-2xl">🎯</span>
             </div>
             <h3 className="font-semibold text-white mb-2">Calorie Targeted</h3>
             <p className="text-white/70">Meet your nutritional goals precisely</p>
           </div>
           <div className="p-6">
-            <div className="w-12 h-12 bg-[#39E98E]/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
+            <div className="w-12 h-12 bg-primary/10 rounded-lg mx-auto mb-4 flex items-center justify-center">
               <span className="text-2xl">⚡</span>
             </div>
             <h3 className="font-semibold text-white mb-2">AI Powered</h3>

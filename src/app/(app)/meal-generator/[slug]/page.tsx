@@ -86,7 +86,7 @@ export default function MealsPage() {
     return (
       <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
         <div className="text-center">
-          <RefreshCw className="mx-auto mb-4 h-12 w-12 animate-spin text-[#39E98E]" />
+          <RefreshCw className="mx-auto mb-4 h-12 w-12 animate-spin text-primary" />
           <h2 className="text-primary-foreground mb-2 text-2xl font-semibold">
             Generating Your Meal Plans
           </h2>
@@ -187,7 +187,7 @@ export default function MealsPage() {
 
                 <div className="mt-6 border-t pt-4">
                   <Button
-                    className="w-full bg-[#39E98E] hover:bg-[#39E98E]/90"
+                    className="w-full bg-primary hover:bg-primary/90"
                     onClick={() => alert(`Starting meal plan: ${plan.name}`)}
                   >
                     Start This Plan
