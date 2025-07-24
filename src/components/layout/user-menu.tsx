@@ -1,6 +1,7 @@
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { LogOut, Settings } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
@@ -9,7 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 
 export function UserMenu() {
@@ -17,7 +18,7 @@ export function UserMenu() {
   return session?.user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Avatar>
+        <Avatar className="transition-transform hover:scale-110 cursor-pointer">
           <AvatarImage
             className="rounded-full"
             width={40}
@@ -30,9 +31,15 @@ export function UserMenu() {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Settings />
+          Settings
+        </DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Log out</DropdownMenuItem>
+        <DropdownMenuItem>
+          <LogOut />
+          Log out
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   ) : (

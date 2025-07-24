@@ -84,25 +84,27 @@ export default function MealsPage() {
   // TODO: make sure to navigate to new slug on successful regenerate
   if (isLoading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
         <div className="text-center">
           <RefreshCw className="mx-auto mb-4 h-12 w-12 animate-spin text-[#39E98E]" />
-          <h2 className="mb-2 text-2xl font-semibold text-primary-foreground">
+          <h2 className="text-primary-foreground mb-2 text-2xl font-semibold">
             Generating Your Meal Plans
           </h2>
-          <p className="text-primary-foreground/70">This will just take a moment...</p>
+          <p className="text-primary-foreground/70">
+            This will just take a moment...
+          </p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen px-4 py-12">
+    <div className="px-4 py-12">
       <div className="mx-auto max-w-6xl">
         <div className="mb-8 flex items-center justify-between">
           <Link
-            href="/form"
-            className="inline-flex items-center text-[#39E98E] transition-colors hover:text-[#39E98E]/80"
+            href="/meal-generator/new"
+            className="text-primary hover:text-primary/80 inline-flex items-center transition-colors"
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Form
@@ -119,10 +121,10 @@ export default function MealsPage() {
         </div>
 
         <div className="mb-12 text-center">
-          <h1 className="mb-4 text-4xl font-bold text-primary-foreground">
+          <h1 className="text-primary-foreground mb-4 text-4xl font-bold">
             Your Meal Plans
           </h1>
-          <p className="text-xl text-primary-foreground/70">
+          <p className="text-primary-foreground/70 text-xl">
             Found {mealPlans.length} personalized meal plans for you
           </p>
         </div>
@@ -198,10 +200,10 @@ export default function MealsPage() {
 
         {mealPlans.length === 0 && (
           <div className="py-12 text-center">
-            <h3 className="mb-2 text-xl font-semibold text-primary-foreground">
+            <h3 className="text-primary-foreground mb-2 text-xl font-semibold">
               No meal plans found
             </h3>
-            <p className="mb-4 text-primary-foreground/70">
+            <p className="text-primary-foreground/70 mb-4">
               Try going back to the form and adjusting your preferences.
             </p>
             <Link href="/meal-generator/new">

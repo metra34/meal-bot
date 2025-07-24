@@ -25,12 +25,12 @@ export default function RootLayout({
     <html lang="en" className={`${geist.variable}`}>
       <body
         cz-shortcut-listen="true"
-        className="min-h-screen bg-gradient-to-tr from-[#2E313B] to-[#55555E]"
+        className="flex flex-col min-h-screen bg-gradient-to-tr from-[#2E313B] to-[#55555E]"
       >
         <SessionProvider>
           <TRPCReactProvider>
             <Header />
-            <main className="pt-16 pb-16">{children}</main>
+            <main className="flex-1 pt-16 pb-2">{children}</main>
             <Footer />
           </TRPCReactProvider>
         </SessionProvider>

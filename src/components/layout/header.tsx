@@ -16,7 +16,7 @@ import { UserMenu } from "./user-menu";
 
 export function Header() {
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 flex w-screen items-center justify-between bg-transparent p-2 pr-3">
+    <header className="fixed top-0 right-0 left-0 z-50 flex w-screen items-center justify-between bg-background p-2 pr-3">
       <div className="w-16">
         <Link href="/">
           <Image
