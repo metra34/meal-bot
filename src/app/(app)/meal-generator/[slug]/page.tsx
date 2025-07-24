@@ -198,13 +198,13 @@ export default function MealsPage() {
 
         {mealPlans.length === 0 && (
           <div className="py-12 text-center">
-            <h3 className="mb-2 text-xl font-semibold text-[#383B45]">
+            <h3 className="mb-2 text-xl font-semibold text-primary-foreground">
               No meal plans found
             </h3>
-            <p className="mb-4 text-[#383B45]/70">
+            <p className="mb-4 text-primary-foreground/70">
               Try going back to the form and adjusting your preferences.
             </p>
-            <Link href="/form">
+            <Link href="/meal-generator/new">
               <Button>Create New Meal Plan</Button>
             </Link>
           </div>
