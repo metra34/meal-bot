@@ -14,7 +14,12 @@ import {
 } from "~/components/ui/dropdown-menu";
 
 export function UserMenu() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return null;
+  }
+
   return session?.user ? (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

@@ -31,7 +31,6 @@ const formSchema = z.object({
   ingredients: z.array(z.string()),
   calories: z.number().min(500).max(5000),
   mealTypes: z.array(z.string()).min(1, "Select at least one meal type"),
-  numServings: z.number().min(1).max(10),
   numResults: z.number().min(1).max(15),
 });
 
@@ -45,7 +44,6 @@ export default function NewMealFormPage() {
       ingredients: [],
       calories: 2000,
       mealTypes: ["breakfast", "lunch", "dinner"],
-      numServings: 2,
       numResults: 10,
     },
   });
@@ -227,30 +225,6 @@ export default function NewMealFormPage() {
                         ),
                       )}
                     </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {/* Number of Servings */}
-              <FormField
-                control={form.control}
-                name="numServings"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-lg font-semibold">
-                      Number of Servings
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        min="1"
-                        max="10"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        className="text-lg"
-                      />
-                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
