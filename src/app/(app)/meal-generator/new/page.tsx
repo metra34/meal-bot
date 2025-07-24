@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod";
+import type z from "zod";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -26,20 +26,14 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-
-const formSchema = z.object({
-  ingredients: z.array(z.string()),
-  calories: z.number().min(500).max(5000),
-  mealTypes: z.array(z.string()).min(1, "Select at least one meal type"),
-  numResults: z.number().min(1).max(15),
-});
+import { MEAL_GENERATOR_FORM_SCHEMA } from "~/lib/constants/meals";
 
 export default function NewMealFormPage() {
   const router = useRouter();
   const [currentIngredient, setCurrentIngredient] = useState("");
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof MEAL_GENERATOR_FORM_SCHEMA>>({
+    resolver: zodResolver(MEAL_GENERATOR_FORM_SCHEMA),
     defaultValues: {
       ingredients: [],
       calories: 2000,
@@ -68,7 +62,7 @@ export default function NewMealFormPage() {
     );
   };
 
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
+  const onSubmit = (data: z.infer<typeof MEAL_GENERATOR_FORM_SCHEMA>) => {
     // Generate mock meal data and navigate to meals page
     const mockMeals = Array.from({ length: data.numResults }, (_, i) => ({
       id: i + 1,
@@ -89,7 +83,7 @@ export default function NewMealFormPage() {
     <div className="container mx-auto px-4 py-4">
       <Link
         href="/"
-        className="mb-8 inline-flex items-center text-primary transition-colors hover:text-primary/80"
+        className="text-primary hover:text-primary/80 mb-8 inline-flex items-center transition-colors"
       >
         <ArrowLeft className="mr-2 h-4 w-4" />
         Back to Home
@@ -187,7 +181,7 @@ export default function NewMealFormPage() {
                 control={form.control}
                 name="mealTypes"
                 render={() => (
-                  <FormItem >
+                  <FormItem>
                     <FormLabel className="text-lg font-semibold">
                       Meal Types
                     </FormLabel>
@@ -258,7 +252,7 @@ export default function NewMealFormPage() {
 
               <Button
                 type="submit"
-                className="w-full bg-primary py-3 text-lg hover:bg-primary/90"
+                className="bg-primary hover:bg-primary/90 w-full py-3 text-lg"
               >
                 Generate Meal Plans
               </Button>

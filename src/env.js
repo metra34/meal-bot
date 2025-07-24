@@ -47,7 +47,7 @@ export const env = createEnv({
     DEEPSEEK_BASE_URL: process.env.DEEPSEEK_BASE_URL,
     DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
     DEEPSEEK_MODEL: process.env.DEEPSEEK_MODEL,
-    DEEPSEEK_TEMPERATURE: process.env.DEEPSEEK_TEMPERATURE,
+    DEEPSEEK_TEMPERATURE: Number(process.env.DEEPSEEK_TEMPERATURE),
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

@@ -1,8 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 
 import OpenAI from "openai";
 import { env } from "~/env";
+import { INITIAL_SYSTEM_PROMPT } from "~/lib/constants/meal-generator-prompts";
 
 const BASE_URl = env.DEEPSEEK_BASE_URL as string;
 const API_KEY = env.DEEPSEEK_API_KEY as string;
@@ -22,14 +24,20 @@ const deepseek = new OpenAI({
  * https://api-docs.deepseek.com/quick_start/error_codes
  */
 export async function getDeepseekResponse(prompt: string) {
-    
   const completion = await deepseek.chat.completions.create({
     stream: false,
-    messages: [{ role: "system", content: "You are a helpful assistant." }],
+    messages: [
+      { role: "system", content: INITIAL_SYSTEM_PROMPT },
+      { role: "user", content: prompt },
+    ],
     model: MODEL,
     temperature: TEMPERATURE,
     response_format: {
       type: "json_object",
     },
   });
+
+  console.log(completion?.choices);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  return completion;
 }
