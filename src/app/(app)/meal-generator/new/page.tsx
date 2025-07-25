@@ -53,7 +53,7 @@ export default function NewMealFormPage() {
       ingredients: [],
       calories: 2000,
       mealTypes: ["breakfast", "lunch", "dinner"],
-      numResults: 10,
+      numResults: 5,
     },
   });
 

@@ -13,13 +13,13 @@ export const mealsRouter = createTRPCRouter({
         "$NUM_RESULTS",
         input.numResults.toString(),
       )
-        .replace("$MEAL_TYPES", JSON.stringify(input.mealTypes))
+        .replace("$MEAL_TYPES", input.mealTypes.join(", "))
         .replace("$CALORIES", input.calories.toString());
 
       if (input.ingredients.length > 0) {
         userPrompt = userPrompt.replace(
           "$INGREDIENTS",
-          `Some of the meals should use one or more of these ingredients: ${input.ingredients.join(",")}.`,
+          `Some of the meals should use one or more of these ingredients: ${input.ingredients.join(", ")}.`,
         );
       } else {
         userPrompt = userPrompt.replace("$INGREDIENTS", "");
