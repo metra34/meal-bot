@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import type z from "zod";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -26,13 +25,26 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { MEAL_GENERATOR_FORM_SCHEMA } from "~/lib/constants/meals";
+import {
+  MEAL_GENERATOR_FORM_SCHEMA,
+  type MealGeneratorFormData,
+} from "~/lib/constants/meals";
+import { api } from "~/trpc/react";
 
 export default function NewMealFormPage() {
   const router = useRouter();
   const [currentIngredient, setCurrentIngredient] = useState("");
 
-  const form = useForm<z.infer<typeof MEAL_GENERATOR_FORM_SCHEMA>>({
+  const generateMeal = api.meals.generateMeals.useMutation({
+    onSuccess: (data) => {
+      console.log("data???", data);
+    },
+    onError: (error) => {
+      console.log("error???", error);
+    },
+  });
+
+  const form = useForm<MealGeneratorFormData>({
     resolver: zodResolver(MEAL_GENERATOR_FORM_SCHEMA),
     defaultValues: {
       ingredients: [],
@@ -62,21 +74,22 @@ export default function NewMealFormPage() {
     );
   };
 
-  const onSubmit = (data: z.infer<typeof MEAL_GENERATOR_FORM_SCHEMA>) => {
+  const onSubmit = (data: MealGeneratorFormData) => {
     // Generate mock meal data and navigate to meals page
-    const mockMeals = Array.from({ length: data.numResults }, (_, i) => ({
-      id: i + 1,
-      name: `Meal Plan ${i + 1}`,
-      meals: data.mealTypes
-        .slice(0, Math.floor(Math.random() * 3) + 1)
-        .map((type) => ({
-          type,
-          name: `${type.charAt(0).toUpperCase() + type.slice(1)} Dish ${i + 1}`,
-        })),
-    }));
+    // const mockMeals = Array.from({ length: data.numResults }, (_, i) => ({
+    //   id: i + 1,
+    //   name: `Meal Plan ${i + 1}`,
+    //   meals: data.mealTypes
+    //     .slice(0, Math.floor(Math.random() * 3) + 1)
+    //     .map((type) => ({
+    //       type,
+    //       name: `${type.charAt(0).toUpperCase() + type.slice(1)} Dish ${i + 1}`,
+    //     })),
+    // }));
     // TODO replace with actual api call, wait for response of meal plan id and navigate to it
-    sessionStorage.setItem("mealPlans", JSON.stringify(mockMeals));
-    router.push("/meal-generator/test12345");
+    // sessionStorage.setItem("mealPlans", JSON.stringify(mockMeals));
+    // router.push("/meal-generator/test12345");
+    generateMeal.mutate(data);
   };
 
   return (

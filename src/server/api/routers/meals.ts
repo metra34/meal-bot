@@ -1,30 +1,64 @@
 import { z } from "zod";
+import { INITIAL_USER_PROMPT } from "~/lib/constants/meal-generator-prompts";
 import { MEAL_GENERATOR_FORM_SCHEMA } from "~/lib/constants/meals";
 
-import {
-  createTRPCRouter,
-  protectedProcedure
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { getDeepseekResponse } from "~/server/services/deepseek.service";
 
 export const mealsRouter = createTRPCRouter({
-
-  create: protectedProcedure
+  generateMeals: protectedProcedure
     .input(MEAL_GENERATOR_FORM_SCHEMA)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.post.create({
-        data: {
-          name: input.name,
-          createdBy: { connect: { id: ctx.session.user.id } },
-        },
-      });
+      let userPrompt = INITIAL_USER_PROMPT.replace(
+        "$NUM_RESULTS",
+        input.numResults.toString(),
+      )
+        .replace("$MEAL_TYPES", JSON.stringify(input.mealTypes))
+        .replace("$CALORIES", input.calories.toString());
+
+      if (input.ingredients.length > 0) {
+        userPrompt = userPrompt.replace(
+          "$INGREDIENTS",
+          `Some of the meals should use one or more of these ingredients: ${input.ingredients.join(",")}.`,
+        );
+      } else {
+        userPrompt = userPrompt.replace("$INGREDIENTS", "");
+      }
+
+      // Generate meals using external service
+      const result = await getDeepseekResponse(userPrompt);
+
+      console.log("result?????");
+      console.log(result);
+
+      // Create multiple meal plans in a single transaction
+      // const savedMealPlans = await ctx.db.$transaction(
+      //   mealPlans.map(plan =>
+      //     ctx.db.mealPlan.create({
+      //       data: {
+      //         name: plan.name,
+      //         description: plan.description,
+      //         meals: plan.meals,
+      //         userId: ctx.session.user.id,
+      //         preferences: input,
+      //         // Add any other relevant fields
+      //         createdAt: new Date(),
+      //         updatedAt: new Date(),
+      //       },
+      //     })
+      //   )
+      // );
+
+      // return savedMealPlans;
+      return result;
     }),
 
-  getLatest: protectedProcedure.query(async ({ ctx }) => {
-    const post = await ctx.db.post.findFirst({
-      orderBy: { createdAt: "desc" },
-      where: { createdBy: { id: ctx.session.user.id } },
-    });
+  // getLatest: protectedProcedure.query(async ({ ctx }) => {
+  //   const post = await ctx.db.post.findFirst({
+  //     orderBy: { createdAt: "desc" },
+  //     where: { createdBy: { id: ctx.session.user.id } },
+  //   });
 
-    return post ?? null;
-  }),
+  //   return post ?? null;
+  // }),
 });

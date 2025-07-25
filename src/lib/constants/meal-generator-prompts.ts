@@ -32,5 +32,5 @@ Your response should be in JSON format as a list of meal plan objects with the f
 */
 export const INITIAL_USER_PROMPT =
   "Create $NUM_RESULTS different daily meal plans comprised of $MEAL_TYPES \
-with a total target calorie count of $CALORIES per meal plan. \
+with a total target calorie count of $CALORIES per meal plan. $INGREDIENTS \
 The answer should be in the expected JSON format.";
