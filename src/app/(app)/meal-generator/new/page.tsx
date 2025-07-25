@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import GeneratingMealsLoading from "~/components/loading/generating-meals-loading";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -38,6 +39,8 @@ export default function NewMealFormPage() {
   const generateMeal = api.meals.generateMeals.useMutation({
     onSuccess: (data) => {
       console.log("data???", data);
+      const result = data?.choices?.[0]?.message?.content ?? "";
+      console.log("result???", JSON.parse(result));
     },
     onError: (error) => {
       console.log("error???", error);
@@ -91,6 +94,10 @@ export default function NewMealFormPage() {
     // router.push("/meal-generator/test12345");
     generateMeal.mutate(data);
   };
+
+  if (generateMeal.isPending) {
+    return <GeneratingMealsLoading />;
+  }
 
   return (
     <div className="container mx-auto px-4 py-4">

@@ -20,6 +20,10 @@ const deepseek = new OpenAI({
  * https://api-docs.deepseek.com/quick_start/error_codes
  */
 export async function getDeepseekResponse(prompt: string) {
+  console.log('getDeepseekResponse!!!');
+  console.log('system prompt: ', INITIAL_SYSTEM_PROMPT);
+  console.log('user prompt: ', prompt);
+
   const completion = await deepseek.chat.completions.create({
     stream: false,
     messages: [
