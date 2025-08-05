@@ -55,7 +55,7 @@ export default function MealPlansContent({ slug }: { slug: string }) {
   return (
     <div className="px-4 py-12">
       <div className="mx-auto max-w-6xl">
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-2 flex items-start justify-between">
           <Link
             href="/meal-generator/new"
             className="text-primary hover:text-primary/80 inline-flex items-center transition-colors"

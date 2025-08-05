@@ -17,6 +17,7 @@ import {
 } from "../ui/card";
 import { useSession } from "next-auth/react";
 import { skipToken } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 export default function MealPlanCard({
   index = 0,
@@ -25,6 +26,8 @@ export default function MealPlanCard({
   index?: number;
   mealPlan: MealPlanWithMeals;
 }) {
+  const router = useRouter();
+
   const utils = api.useUtils();
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { data: session, status } = useSession();
@@ -116,6 +119,10 @@ export default function MealPlanCard({
     toggleFavoriteMealMutation.mutate(mealId);
   };
 
+  const onViewDetails = () => {
+    router.push(`/meal-plans/details/${mealPlan.id}`);
+  };
+
   return (
     <Card
       key={mealPlan.id}
@@ -142,7 +149,7 @@ export default function MealPlanCard({
         <div className="space-y-3">
           <h4 className="font-semibold text-[#383B45]">Included Meals:</h4>
           <div className="space-y-2">
-            {mealPlan.meals.map((meal: Meal, mealIndex: number) => (
+            {mealPlan?.meals?.map((meal: Meal, mealIndex: number) => (
               <div
                 key={mealIndex}
                 className={`px-0 py-3 transition-all duration-300`}
@@ -176,7 +183,7 @@ export default function MealPlanCard({
         <div className="mt-4 pt-2">
           <Button
             className="bg-primary hover:bg-primary/90 w-full"
-            onClick={() => alert(`View Details: ${mealPlan.name}`)}
+            onClick={onViewDetails}
           >
             <ReceiptText />
             View Details

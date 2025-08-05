@@ -182,4 +182,28 @@ export const mealsRouter = createTRPCRouter({
         },
       });
     }),
+  getMealPlanById: protectedProcedure
+    .input(z.string())
+    .query(
+      async ({ ctx, input: mealPlanId }): Promise<MealPlanWithMeals | null> => {
+        console.log("HERE!", mealPlanId);
+        return ctx.db.mealPlan.findFirst({
+          where: {
+            id: mealPlanId,
+            userId: ctx.session.user.id,
+          },
+          include: {
+            meals: {
+              include: {
+                recipes: {
+                  include: {
+                    ingredients: true,
+                  },
+                },
+              },
+            },
+          },
+        });
+      },
+    ),
 });
