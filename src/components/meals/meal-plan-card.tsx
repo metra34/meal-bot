@@ -3,18 +3,18 @@
 import type { Meal } from "@prisma/client";
 import { ReceiptText, Users } from "lucide-react";
 import { getMealTypeColor } from "~/lib/utils";
+import { api } from "~/trpc/react";
 import type { MealPlanWithMeals } from "~/types";
 import { FavoriteToggle } from "../buttons/favorite-toggle";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "../ui/card";
-import { api } from "~/trpc/react";
 
 export default function MealPlanCard({
   index = 0,
@@ -24,6 +24,35 @@ export default function MealPlanCard({
   mealPlan: MealPlanWithMeals;
 }) {
   const utils = api.useUtils();
+
+  const { data: isFavorited = false } =
+    api.favorites.isMealPlanFavorited.useQuery(mealPlan.id);
+
+  const toggleFavoriteMealPlanMutation =
+    api.favorites.toggleMealPlanFavorite.useMutation({
+      onMutate: async (mealPlanId) => {
+        await utils.favorites.isMealPlanFavorited.cancel();
+
+        // Save previous state
+        const previousValue =
+          utils.favorites.isMealPlanFavorited.getData(mealPlanId);
+
+        // Optimistically update
+        utils.favorites.isMealPlanFavorited.setData(mealPlanId, !previousValue);
+
+        return { previousValue };
+      },
+      onError: (err, mealPlanId, context) => {
+        // Rollback on error
+        utils.favorites.isMealPlanFavorited.setData(
+          mealPlanId,
+          context?.previousValue,
+        );
+      },
+      onSettled: (data) => {
+        void utils.favorites.isMealPlanFavorited.invalidate(data?.mealPlanId);
+      },
+    });
 
   const { data: favoriteMealIds = [] } =
     api.favorites.getFavoriteMealIds.useQuery();
@@ -62,6 +91,10 @@ export default function MealPlanCard({
       },
     });
 
+  const toggleFavoriteMealPlan = () => {
+    toggleFavoriteMealPlanMutation.mutate(mealPlan.id);
+  };
+
   const toggleFavoriteMeal = (mealId: string) => {
     toggleFavoriteMealMutation.mutate(mealId);
   };
@@ -78,7 +111,10 @@ export default function MealPlanCard({
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg">{mealPlan.name}</CardTitle>
           <div className="flex items-center text-sm text-[#383B45]/60">
-            <FavoriteToggle pressed={false} onPressedChange={() => null} />
+            <FavoriteToggle
+              pressed={isFavorited}
+              onPressedChange={() => toggleFavoriteMealPlan()}
+            />
           </div>
         </div>
         <CardDescription className="flex items-center text-sm">

@@ -18,7 +18,7 @@ export function FavoriteToggle({
   const handlePress = () => {
     setIsAnimating(true);
     onPressedChange(!pressed);
-    setTimeout(() => setIsAnimating(false), 250);
+    setTimeout(() => setIsAnimating(false), 350);
   };
 
   return (
@@ -30,7 +30,7 @@ export function FavoriteToggle({
     >
       <Heart
         strokeWidth={3}
-        className={`size-${size === "sm" ? "5" : "7"} ${pressed ? "fill-red-500 text-red-500" : "text-gray-400"} ${isAnimating ? "animate-ping duration-250" : ""}`}
+        className={`size-${size === "sm" ? "5" : "7"} ${pressed ? "fill-red-500 text-red-500" : "text-gray-400"} ${isAnimating ? "animate-ping duration-350" : ""}`}
       />
     </Toggle>
   );

@@ -22,7 +22,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang="en" className={`${geist.variable}`} data-scroll-behavior="smooth">
       <body
         cz-shortcut-listen="true"
         className="flex flex-col min-h-screen bg-gradient-to-tr from-[#2E313B] to-[#55555E]"
