@@ -1,9 +1,13 @@
 "use client";
 
+import type { UserPrompt } from "@prisma/client";
 import { skipToken } from "@tanstack/react-query";
 import { ArrowLeft, RefreshCw } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import GeneratingMealsLoading from "~/components/loading/generating-meals-loading";
 import MealPlanCard from "~/components/meals/meal-plan-card";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
@@ -13,13 +17,38 @@ export default function MealPlansContent({ slug }: { slug: string }) {
   const { data: session, status } = useSession();
   const isLoggedIn = status === "authenticated";
 
+  const router = useRouter();
+
   const { data: mealPlans = [], isPending: isPendingMealPlans } =
     api.meals.getMealPlansByPromptId.useQuery(isLoggedIn ? slug : skipToken);
 
-  // TODO: implement skeleton loading, maybe also loading.tsx state for nextjs
-  // if (isPendingMealPlans) {
-  //   return <GeneratingMealsLoading />;
-  // }
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const regenerateMealPlansMutation = api.meals.regenerateMealPlans.useMutation(
+    {
+      onSuccess: (data: UserPrompt) => {
+        console.log("data???", data);
+        router.push(`/meal-generator/${data.id}`);
+      },
+      onError: (error) => {
+        console.log("error???", error);
+      },
+      onSettled: () => {
+        setTimeout(() => {
+          setIsLoading(false);
+        }, 1000);
+      },
+    },
+  );
+
+  const regenerateMealPlans = () => {
+    setIsLoading(true);
+    regenerateMealPlansMutation.mutate(slug);
+  };
+
+  if (isLoading) {
+    return <GeneratingMealsLoading />;
+  }
 
   return (
     <div className="px-4 py-12">
@@ -34,7 +63,7 @@ export default function MealPlansContent({ slug }: { slug: string }) {
           </Link>
 
           <Button
-            onClick={() => console.log("Regenerate meal plans")}
+            onClick={regenerateMealPlans}
             variant="outline"
             className="flex items-center gap-2"
           >

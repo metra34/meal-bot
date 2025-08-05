@@ -39,7 +39,7 @@ export default function NewMealFormPage() {
   const generateMeal = api.meals.generateMeals.useMutation({
     onSuccess: (data: UserPrompt) => {
       console.log("data???", data);
-      router.push(`/meal-generator/${data.id}`);
+      router.push(`/meal-plans/${data.id}`);
     },
     onError: (error) => {
       console.log("error???", error);

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import Image from "next/image";
+import { Cpu } from "lucide-react";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -16,15 +16,12 @@ import { UserMenu } from "./user-menu";
 
 export function Header() {
   return (
-    <header className="fixed top-0 right-0 left-0 z-50 flex w-screen items-center justify-between bg-background py-2 px-4">
+    <header className="bg-background fixed top-0 right-0 left-0 z-50 flex w-screen items-center justify-between px-4 py-2">
       <div className="w-16">
         <Link href="/">
-          <Image
-            src="/logos/meal-logo-sm.png"
-            alt="logo"
-            width={40}
-            height={40}
-          />
+          <div className="bg-primary flex h-10 w-10 items-center justify-center rounded-full">
+            <Cpu className="h-6 w-6 text-white" />
+          </div>
         </Link>
       </div>
       <div>

@@ -119,6 +119,13 @@ export const mealsRouter = createTRPCRouter({
         });
       }
 
+      if (prompt.type === "regenerate") {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You have already regenerated this prompt",
+        });
+      }
+
       // Regenerate meal plans using external service
       const response = await getDeepseekMealsResponse(prompt.prompt, true);
 

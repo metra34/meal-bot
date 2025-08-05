@@ -1,6 +1,6 @@
 import MealPlansContent from "./meal-plans-content-page";
 
-export default async function MealsPage({
+export default async function MealPlansPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
