@@ -34,6 +34,7 @@ import type { MealGeneratorFormData } from "~/types";
 export default function NewMealFormPage() {
   const router = useRouter();
   const [currentIngredient, setCurrentIngredient] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const generateMeal = api.meals.generateMeals.useMutation({
     onSuccess: (data: UserPrompt) => {
@@ -42,6 +43,11 @@ export default function NewMealFormPage() {
     },
     onError: (error) => {
       console.log("error???", error);
+    },
+    onSettled: () => {
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     },
   });
 
@@ -76,10 +82,11 @@ export default function NewMealFormPage() {
   };
 
   const onSubmit = (data: MealGeneratorFormData) => {
+    setIsLoading(true);
     generateMeal.mutate(data);
   };
 
-  if (generateMeal.isPending) {
+  if (isLoading) {
     return <GeneratingMealsLoading />;
   }
 

@@ -11,9 +11,10 @@ export default function MealPlansContent({ slug }: { slug: string }) {
   const { data: mealPlans = [], isPending: isPendingMealPlans } =
     api.meals.getMealPlansByPromptId.useQuery(slug);
 
-  if (isPendingMealPlans) {
-    return <GeneratingMealsLoading />;
-  }
+  // TODO: implement skeleton loading, maybe also loading.tsx state for nextjs
+  // if (isPendingMealPlans) {
+  //   return <GeneratingMealsLoading />;
+  // }
 
   return (
     <div className="px-4 py-12">
@@ -48,15 +49,11 @@ export default function MealPlansContent({ slug }: { slug: string }) {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {mealPlans.map((plan, index) => (
-            <MealPlanCard
-              key={plan.id}
-              mealPlan={plan}
-              index={index}
-            />
+            <MealPlanCard key={plan.id} mealPlan={plan} index={index} />
           ))}
         </div>
 
-        {mealPlans.length === 0 && (
+        {!isPendingMealPlans && mealPlans.length === 0 && (
           <div className="py-12 text-center">
             <h3 className="text-primary-foreground mb-2 text-xl font-semibold">
               No meal plans found
