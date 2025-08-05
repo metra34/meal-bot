@@ -2,8 +2,10 @@ import { TRPCError } from "@trpc/server";
 import { INITIAL_USER_PROMPT } from "~/lib/constants/meal-generator-prompts";
 import { MEAL_GENERATOR_FORM_SCHEMA } from "~/lib/constants/meals";
 
+import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { getDeepseekResponse } from "~/server/services/deepseek.service";
+import type { MealPlanWithMeals } from "~/types";
 import type { MealPlansResponse } from "../types";
 
 export const mealsRouter = createTRPCRouter({
@@ -57,6 +59,7 @@ export const mealsRouter = createTRPCRouter({
               userId: userId,
               meals: {
                 create: plan.meals.map((meal) => ({
+                  name: meal.name,
                   type: meal.type,
                   description: meal.name,
                   calories: meal.calories,
@@ -64,6 +67,19 @@ export const mealsRouter = createTRPCRouter({
               },
             })),
           },
+        },
+      });
+    }),
+  getMealPlansByPromptId: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input: promptId }): Promise<MealPlanWithMeals[]> => {
+      return ctx.db.mealPlan.findMany({
+        where: {
+          userPromptId: promptId,
+          userId: ctx.session.user.id,
+        },
+        include: {
+          meals: true,
         },
       });
     }),

@@ -112,6 +112,7 @@ model MealPlan {
 model Meal {
     id          String             @id @default(cuid())
     type        MealType
+    name        String
     description String
     calories    Int
     mealPlanId  String
