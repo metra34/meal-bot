@@ -41,5 +41,5 @@ export async function getDeepseekResponse(prompt: string) {
     "",
   );
 
-  return myResult;
+  return myResult ?? null;
 }

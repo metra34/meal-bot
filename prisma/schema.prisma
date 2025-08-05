@@ -114,7 +114,6 @@ model Meal {
     type        MealType
     description String
     calories    Int
-    netCarbs    Float
     mealPlanId  String
     mealPlan    MealPlan           @relation(fields: [mealPlanId], references: [id])
     recipes     Recipe[]           @relation("MealRecipes")
@@ -135,7 +134,6 @@ model Recipe {
     totalCalories Int
     totalFat      Float
     totalCarbs    Float
-    netCarbs      Float
     totalProtein  Float
     ingredients   Ingredient[]
     meals         Meal[]               @relation("MealRecipes")
@@ -151,7 +149,6 @@ model Ingredient {
     calories Float
     fat      Float
     carbs    Float
-    netCarbs Float
     protein  Float
 }
 

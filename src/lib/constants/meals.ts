@@ -6,5 +6,3 @@ export const MEAL_GENERATOR_FORM_SCHEMA = z.object({
   mealTypes: z.array(z.string()).min(1, "Select at least one meal type"),
   numResults: z.number().min(1).max(15),
 });
-
-export type MealGeneratorFormData = z.infer<typeof MEAL_GENERATOR_FORM_SCHEMA>;

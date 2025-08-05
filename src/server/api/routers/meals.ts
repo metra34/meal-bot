@@ -1,9 +1,10 @@
-import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import { INITIAL_USER_PROMPT } from "~/lib/constants/meal-generator-prompts";
 import { MEAL_GENERATOR_FORM_SCHEMA } from "~/lib/constants/meals";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { getDeepseekResponse } from "~/server/services/deepseek.service";
+import type { MealPlansResponse } from "../types";
 
 export const mealsRouter = createTRPCRouter({
   generateMeals: protectedProcedure
@@ -26,32 +27,48 @@ export const mealsRouter = createTRPCRouter({
       }
 
       // Generate meals using external service
-      const result = await getDeepseekResponse(userPrompt);
+      const response = await getDeepseekResponse(userPrompt);
 
+      if (!response) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to generate meal plans",
+        });
+      }
       console.log("result?????");
-      console.log(result);
+      console.log(response);
 
-      // Create multiple meal plans in a single transaction
-      // const savedMealPlans = await ctx.db.$transaction(
-      //   mealPlans.map(plan =>
-      //     ctx.db.mealPlan.create({
-      //       data: {
-      //         name: plan.name,
-      //         description: plan.description,
-      //         meals: plan.meals,
-      //         userId: ctx.session.user.id,
-      //         preferences: input,
-      //         // Add any other relevant fields
-      //         createdAt: new Date(),
-      //         updatedAt: new Date(),
-      //       },
-      //     })
-      //   )
-      // );
+      const mealPlansObj = JSON.parse(response) as MealPlansResponse;
+      const userId = ctx.session.user.id;
 
-      // return savedMealPlans;
-      return result;
+      console.log(response);
+
+      return await ctx.db.userPrompt.create({
+        data: {
+          prompt: userPrompt,
+          userId: userId,
+          mealPlans: {
+            create: mealPlansObj.meal_plans.map((plan) => ({
+              name: plan.name,
+              totalCalories: plan.meals.reduce(
+                (sum, meal) => sum + meal.calories,
+                0,
+              ),
+              userId: userId,
+              meals: {
+                create: plan.meals.map((meal) => ({
+                  type: meal.type,
+                  description: meal.name,
+                  calories: meal.calories,
+                })),
+              },
+            })),
+          },
+        },
+      });
     }),
+
+  // getLatest: protectedProcedure.query(async ({ ctx }) => {
 
   // getLatest: protectedProcedure.query(async ({ ctx }) => {
   //   const post = await ctx.db.post.findFirst({
