@@ -68,6 +68,7 @@ model User {
     favoriteMealPlans UserFavoriteMealPlan[]
     favoriteMeals     UserFavoriteMeal[]
     favoriteRecipes   UserFavoriteRecipe[]
+    prompts           UserPrompt[]
 }
 
 model VerificationToken {
@@ -76,6 +77,18 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+/**
+ * Prompt
+ */
+model UserPrompt {
+    id        String     @id @default(cuid())
+    userId    String
+    user      User       @relation(fields: [userId], references: [id])
+    prompt    String
+    mealPlans MealPlan[]
+    createdAt DateTime   @default(now())
 }
 
 /**
@@ -92,6 +105,8 @@ model MealPlan {
     meals         Meal[]
     tags          MealPlanTag[]
     favoritedBy   UserFavoriteMealPlan[]
+    userPromptId  String
+    userPrompt    UserPrompt             @relation(fields: [userPromptId], references: [id])
 }
 
 model Meal {

@@ -1,14 +1,12 @@
 import OpenAI from "openai";
 import { env } from "~/env";
 import { INITIAL_SYSTEM_PROMPT } from "~/lib/constants/meal-generator-prompts";
+import logger from "~/lib/logger";
 
 const BASE_URl = env.DEEPSEEK_BASE_URL;
 const API_KEY = env.DEEPSEEK_API_KEY;
 const MODEL = env.DEEPSEEK_MODEL;
 const TEMPERATURE = env.DEEPSEEK_TEMPERATURE;
-
-type Message = OpenAI.Chat.Completions.ChatCompletionMessageParam;
-type Tool = OpenAI.Chat.Completions.ChatCompletionTool;
 
 const deepseek = new OpenAI({
   apiKey: API_KEY,
@@ -20,9 +18,9 @@ const deepseek = new OpenAI({
  * https://api-docs.deepseek.com/quick_start/error_codes
  */
 export async function getDeepseekResponse(prompt: string) {
-  console.log('getDeepseekResponse!!!');
-  console.log('system prompt: ', INITIAL_SYSTEM_PROMPT);
-  console.log('user prompt: ', prompt);
+  logger.info("getDeepseekResponse!!!");
+  logger.debug(`system prompt: ${INITIAL_SYSTEM_PROMPT}`);
+  logger.info(`user prompt: ${prompt}`);
 
   const completion = await deepseek.chat.completions.create({
     stream: false,
@@ -37,6 +35,11 @@ export async function getDeepseekResponse(prompt: string) {
     },
   });
 
-  console.log(completion?.choices);
-  return completion;
+  logger.debug(JSON.stringify(completion));
+  const myResult = completion?.choices[0]?.message?.content?.replaceAll(
+    /[\n\r\t]|\s{2,}/g,
+    "",
+  );
+
+  return myResult;
 }

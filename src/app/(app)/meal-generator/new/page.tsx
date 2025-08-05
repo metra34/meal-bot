@@ -39,8 +39,8 @@ export default function NewMealFormPage() {
   const generateMeal = api.meals.generateMeals.useMutation({
     onSuccess: (data) => {
       console.log("data???", data);
-      const result = data?.choices?.[0]?.message?.content ?? "";
-      console.log("result???", JSON.parse(result));
+      // const result = data?.choices?.[0]?.message?.content ?? "";
+      console.log("result???", JSON.parse(data ?? ""));
     },
     onError: (error) => {
       console.log("error???", error);
