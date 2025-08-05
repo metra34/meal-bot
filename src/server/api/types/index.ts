@@ -6,6 +6,7 @@ export const mealResponseSchema = z.object({
   type: mealTypeEnum,
   name: z.string(),
   calories: z.number(),
+  description: z.string(),
 });
 
 export const mealPlanResponseSchema = z.object({

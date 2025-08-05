@@ -23,6 +23,12 @@ export const env = createEnv({
       .enum(["deepseek-chat", "deepseek-reasoner"])
       .default("deepseek-chat"),
     DEEPSEEK_TEMPERATURE: z.number().min(0.0).max(1.5).default(1.0),
+    USER_PROMPT_LIMIT: z.number().int().min(-1).default(5).optional(),
+    USER_ALLOWED_EMAILS: z
+      .string()
+      .transform((str) => str.split(",").map((e) => e.trim()))
+      .pipe(z.array(z.string().email()))
+      .optional(),
   },
 
   /**
@@ -48,6 +54,8 @@ export const env = createEnv({
     DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
     DEEPSEEK_MODEL: process.env.DEEPSEEK_MODEL,
     DEEPSEEK_TEMPERATURE: Number(process.env.DEEPSEEK_TEMPERATURE),
+    USER_PROMPT_LIMIT: Number(process.env.USER_PROMPT_LIMIT),
+    USER_ALLOWED_EMAILS: process.env.USER_ALLOWED_EMAILS,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

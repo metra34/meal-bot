@@ -119,12 +119,23 @@ model Recipe {
     name          String
     instructions  String
     totalCalories Int
-    totalFat      Float
-    totalCarbs    Float
-    totalProtein  Float
-    ingredients   String[]
+    totalFat      Int
+    totalCarbs    Int
+    totalProtein  Int
+    createdAt     DateTime             @default(now())
+    ingredients   Ingredient[]
     meals         Meal[]               @relation("MealRecipes")
     favoritedBy   UserFavoriteRecipe[]
+}
+
+model Ingredient {
+    id       Int    @id @default(autoincrement())
+    recipeId String
+    recipe   Recipe @relation(fields: [recipeId], references: [id])
+    name     String
+    quantity Float
+    unit     String
+    calories Int
 }
 
 /**

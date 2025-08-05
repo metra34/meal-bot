@@ -61,7 +61,7 @@ export const mealsRouter = createTRPCRouter({
                 create: plan.meals.map((meal) => ({
                   name: meal.name,
                   type: meal.type,
-                  description: meal.name,
+                  description: meal.description,
                   calories: meal.calories,
                 })),
               },

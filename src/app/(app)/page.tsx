@@ -1,4 +1,4 @@
-import { ArrowRight, Cpu, Utensils } from "lucide-react";
+import { ArrowRight, Cpu } from "lucide-react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 
@@ -9,9 +9,6 @@ export default function Home() {
         {/* Logo/Icon */}
         <div className="mb-4 mt-8 inline-flex items-center justify-center w-24 h-24 bg-primary rounded-full shadow-lg relative">
           <Cpu className="w-16 h-16 text-white" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <Utensils className="w-6 h-6 text-white" />
-          </div>
         </div>
         
         {/* Hero Title */}
