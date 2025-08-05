@@ -14,19 +14,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// TODO DELETE THIS
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -63,7 +50,6 @@ model User {
     image             String?
     accounts          Account[]
     sessions          Session[]
-    posts             Post[]
     mealPlans         MealPlan[]
     favoriteMealPlans UserFavoriteMealPlan[]
     favoriteMeals     UserFavoriteMeal[]
@@ -136,21 +122,9 @@ model Recipe {
     totalFat      Float
     totalCarbs    Float
     totalProtein  Float
-    ingredients   Ingredient[]
+    ingredients   String[]
     meals         Meal[]               @relation("MealRecipes")
     favoritedBy   UserFavoriteRecipe[]
-}
-
-model Ingredient {
-    id       Int    @id @default(autoincrement())
-    recipeId String
-    recipe   Recipe @relation(fields: [recipeId], references: [id])
-    name     String
-    quantity String
-    calories Float
-    fat      Float
-    carbs    Float
-    protein  Float
 }
 
 /**
