@@ -13,10 +13,6 @@ export default function MealPlanDetailsContentPage({ slug }: { slug: string }) {
   const { data: mealPlan, isPending: isPendingMealPlan } =
     api.meals.getMealPlanById.useQuery(slug);
 
-  if (!mealPlan) {
-    return <div>Meal plan not found</div>;
-  }
-
   return (
     <div className="px-4 py-12">
       <div className="mx-auto max-w-6xl">
@@ -32,10 +28,10 @@ export default function MealPlanDetailsContentPage({ slug }: { slug: string }) {
 
         <div className="mb-12 text-center">
           <h1 className="text-primary-foreground mb-4 text-4xl font-bold">
-            {mealPlan.name}
+            {mealPlan?.name}
           </h1>
           <p className="text-primary-foreground/70 text-xl">
-            Created on {new Date(mealPlan.createdAt).toLocaleDateString('en-CA')}
+            Created on {new Date(mealPlan?.createdAt ?? 0).toLocaleDateString('en-CA')}
           </p>
         </div>
 
