@@ -9,12 +9,14 @@ import { FavoriteToggle } from "../buttons/favorite-toggle";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
 } from "../ui/card";
+import { useSession } from "next-auth/react";
+import { skipToken } from "@tanstack/react-query";
 
 export default function MealPlanCard({
   index = 0,
@@ -24,9 +26,14 @@ export default function MealPlanCard({
   mealPlan: MealPlanWithMeals;
 }) {
   const utils = api.useUtils();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
 
   const { data: isFavorited = false } =
-    api.favorites.isMealPlanFavorited.useQuery(mealPlan.id);
+    api.favorites.isMealPlanFavorited.useQuery(
+      isLoggedIn ? mealPlan.id : skipToken,
+    );
 
   const toggleFavoriteMealPlanMutation =
     api.favorites.toggleMealPlanFavorite.useMutation({
@@ -55,7 +62,9 @@ export default function MealPlanCard({
     });
 
   const { data: favoriteMealIds = [] } =
-    api.favorites.getFavoriteMealIds.useQuery();
+    api.favorites.getFavoriteMealIds.useQuery(
+      isLoggedIn ? undefined : skipToken,
+    );
 
   const toggleFavoriteMealMutation =
     api.favorites.toggleMealFavorite.useMutation({
@@ -92,10 +101,18 @@ export default function MealPlanCard({
     });
 
   const toggleFavoriteMealPlan = () => {
+    if (!isLoggedIn) {
+      // TODO: show error
+      return;
+    }
     toggleFavoriteMealPlanMutation.mutate(mealPlan.id);
   };
 
   const toggleFavoriteMeal = (mealId: string) => {
+    if (!isLoggedIn) {
+      // TODO: show error
+      return;
+    }
     toggleFavoriteMealMutation.mutate(mealId);
   };
 

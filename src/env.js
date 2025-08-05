@@ -23,12 +23,12 @@ export const env = createEnv({
       .enum(["deepseek-chat", "deepseek-reasoner"])
       .default("deepseek-chat"),
     DEEPSEEK_TEMPERATURE: z.number().min(0.0).max(1.5).default(1.0),
-    USER_PROMPT_LIMIT: z.number().int().min(-1).default(5).optional(),
+    USER_PROMPT_LIMIT: z.number().int().min(-1).default(5),
     USER_ALLOWED_EMAILS: z
       .string()
-      .transform((str) => str.split(",").map((e) => e.trim()))
-      .pipe(z.array(z.string().email()))
-      .optional(),
+      .default("")
+      .transform((str) => (str ? str.split(",").map((e) => e.trim()) : []))
+      .pipe(z.array(z.string().email())),
   },
 
   /**

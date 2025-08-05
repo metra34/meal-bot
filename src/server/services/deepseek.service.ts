@@ -1,6 +1,9 @@
 import OpenAI from "openai";
 import { env } from "~/env";
-import { INITIAL_SYSTEM_PROMPT } from "~/lib/constants/meal-generator-prompts";
+import {
+  INITIAL_SYSTEM_PROMPT,
+  REGENERATE_SYSTEM_PROMPT,
+} from "~/lib/constants/meal-generator-prompts";
 import logger from "~/lib/logger";
 
 const BASE_URl = env.DEEPSEEK_BASE_URL;
@@ -17,15 +20,23 @@ const deepseek = new OpenAI({
 /*
  * https://api-docs.deepseek.com/quick_start/error_codes
  */
-export async function getDeepseekResponse(prompt: string) {
-  logger.info("getDeepseekResponse!!!");
-  logger.debug(`system prompt: ${INITIAL_SYSTEM_PROMPT}`);
+export async function getDeepseekMealsResponse(
+  prompt: string,
+  regenerate = false,
+) {
+  logger.info("getDeepseekMealsResponse!!!");
+
+  const SYSTEM_PROMPT = regenerate
+    ? REGENERATE_SYSTEM_PROMPT
+    : INITIAL_SYSTEM_PROMPT;
+
+  logger.debug(`system prompt: ${SYSTEM_PROMPT}`);
   logger.info(`user prompt: ${prompt}`);
 
   const completion = await deepseek.chat.completions.create({
     stream: false,
     messages: [
-      { role: "system", content: INITIAL_SYSTEM_PROMPT },
+      { role: "system", content: SYSTEM_PROMPT },
       { role: "user", content: prompt },
     ],
     model: MODEL,

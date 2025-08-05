@@ -1,15 +1,20 @@
 "use client";
 
+import { skipToken } from "@tanstack/react-query";
 import { ArrowLeft, RefreshCw } from "lucide-react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import GeneratingMealsLoading from "~/components/loading/generating-meals-loading";
 import MealPlanCard from "~/components/meals/meal-plan-card";
 import { Button } from "~/components/ui/button";
 import { api } from "~/trpc/react";
 
 export default function MealPlansContent({ slug }: { slug: string }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data: session, status } = useSession();
+  const isLoggedIn = status === "authenticated";
+
   const { data: mealPlans = [], isPending: isPendingMealPlans } =
-    api.meals.getMealPlansByPromptId.useQuery(slug);
+    api.meals.getMealPlansByPromptId.useQuery(isLoggedIn ? slug : skipToken);
 
   // TODO: implement skeleton loading, maybe also loading.tsx state for nextjs
   // if (isPendingMealPlans) {
