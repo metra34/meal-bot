@@ -1,19 +1,19 @@
 "use client";
 
 import type { Meal } from "@prisma/client";
-import { Users } from "lucide-react";
+import { ReceiptText, Users } from "lucide-react";
 import { getMealTypeColor } from "~/lib/utils";
 import type { MealPlanWithMeals } from "~/types";
+import { FavoriteToggle } from "../buttons/favorite-toggle";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
 } from "../ui/card";
-import { FavoriteToggle } from "../buttons/favorite-toggle";
 
 export default function MealPlanCard({
   index = 0,
@@ -25,7 +25,7 @@ export default function MealPlanCard({
   return (
     <Card
       key={mealPlan.id}
-      className={`transform shadow-lg transition-all duration-500 hover:shadow-xl`}
+      className={`gap-4 transform shadow-lg transition-all duration-500 hover:shadow-xl`}
       style={{
         transitionDelay: `${index * 100}ms`,
       }}
@@ -57,7 +57,7 @@ export default function MealPlanCard({
                   <span className="font-medium text-[#383B45]">
                     {meal.name}
                   </span>
-                  <span className="flex flex-col items-center gap-2">
+                  <span className="flex flex-col items-center gap-1.5">
                     <Badge className={getMealTypeColor(meal.type)}>
                       {meal.type}
                     </Badge>
@@ -71,11 +71,12 @@ export default function MealPlanCard({
           </div>
         </div>
 
-        <div className="mt-6 border-t pt-4">
+        <div className="mt-4 pt-2">
           <Button
             className="bg-primary hover:bg-primary/90 w-full"
             onClick={() => alert(`View Details: ${mealPlan.name}`)}
           >
+            <ReceiptText />
             View Details
           </Button>
         </div>
