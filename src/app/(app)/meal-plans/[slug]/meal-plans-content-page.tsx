@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "sonner";
 import GeneratingMealsLoading from "~/components/loading/generating-meals-loading";
 import MealPlanCard from "~/components/meals/meal-plan-card";
 import { Button } from "~/components/ui/button";
@@ -27,11 +28,12 @@ export default function MealPlansContent({ slug }: { slug: string }) {
   const regenerateMealPlansMutation = api.meals.regenerateMealPlans.useMutation(
     {
       onSuccess: (data: UserPrompt) => {
-        console.log("data???", data);
+        console.log("data", data);
         router.push(`/meal-generator/${data.id}`);
       },
       onError: (error) => {
-        console.log("error???", error);
+        console.error("error", error);
+        toast.error(error.message);
       },
       onSettled: () => {
         setTimeout(() => {

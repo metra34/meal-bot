@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import GeneratingMealsLoading from "~/components/loading/generating-meals-loading";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
@@ -38,11 +39,12 @@ export default function NewMealFormPage() {
 
   const generateMeal = api.meals.generateMeals.useMutation({
     onSuccess: (data: UserPrompt) => {
-      console.log("data???", data);
+      console.log("data", data);
       router.push(`/meal-plans/${data.id}`);
     },
     onError: (error) => {
-      console.log("error???", error);
+      console.error("error", error);
+      toast.error(error.message);
     },
     onSettled: () => {
       setTimeout(() => {
